@@ -1,0 +1,55 @@
+// Color Override
+
+$white: #fcfaf2 !default; //Shironeri*/
+$gray-100: #ededed !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #bdc0ba !default; //Shironezumi
+$gray-500: #91989f !default; //Ginnezumi
+$gray-600: #787d7b !default; //Sunezumi
+$gray-700: #707c74 !default; //Rikyunezumi
+$gray-800: #4f4f48 !default; //Dobunezumi
+$gray-900: #1c1c1c !default; //Sumi
+$black: #080808 !default; //Kuro
+
+$blue: #006284 !default; //Hanada
+$indigo: #113285 !default; //Konjo
+$purple: #66327c !default; //Sumire
+$pink: #e03c8a !default; //Tsutsuji
+$red: #cb1b45 !default; //Kurenai
+$orange: #f75c2f !default; //Benihi
+$yellow: #ffb11b !default; //Yamabuki
+$green: #227d51 !default; //Midori
+$teal: #00aa90 !default; //Aomidori
+$cyan: #81c7d4 !default; //Mizu
+
+@import "bootstrap/scss/bootstrap";
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:wght@500&display=swap");
+
+body {
+  font-family: noto sans cjk kr, source han sans kr, noto sans cjk tc,
+    source han sans tc, noto sans cjk sc, source han sans cn, pingfang tc,
+    hiragino sans gb, microsoft jhenghei, wenquanyi micro hei, st heiti, SimHei,
+    var(--bs-body-font-family);
+}
+
+#dns {
+  height: 1.8em;
+}
+
+#shiuchiuh {
+  font-size: 1.5em;
+  line-height: 4em;
+}
+ruby {
+  ruby-align: center;
+  rt {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-family: "Noto Serif", "Times New Roman", Times, serif;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+}
