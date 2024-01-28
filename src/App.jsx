@@ -78,30 +78,57 @@ function Romanization({ name, spelling }) {
   }
   const romanizationList = lookupRomanization(name);
   console.log(romanizationList);
-  const listItems = romanizationList.map(({ char, rom }) => {
-    if (rom) {
-      return (
-        <ruby>
-          {char}
-          <rt>
-            <ul>
-              {rom.map((ki) => (
-                <li>
-                  {spelling == "IPA"
-                    ? toIpa(ki)
-                    : spelling == "NY"
-                    ? toYaehwei(ki)
-                    : ki}
-                </li>
-              ))}
-            </ul>
-          </rt>
-        </ruby>
-      );
-    } else {
-      return <>{char}</>;
-    }
-  });
+  const listItems =
+    window.navigator.userAgent.indexOf("Chrome") !== -1
+      ? romanizationList.map(({ char, rom }) => {
+          //is Chrome
+          if (rom) {
+            return (
+              <ruby>
+                <rb>{char}</rb>
+                <rt>
+                  {rom.map((ki) => (
+                    <>
+                      {spelling == "IPA"
+                        ? toIpa(ki)
+                        : spelling == "NY"
+                        ? toYaehwei(ki)
+                        : ki}
+                      <br></br>
+                    </>
+                  ))}
+                </rt>
+              </ruby>
+            );
+          } else {
+            return <>{char}</>;
+          }
+        })
+      : romanizationList.map(({ char, rom }) => {
+          //is not Chrome
+          if (rom) {
+            return (
+              <ruby>
+                <rb>{char}</rb>
+                <rt>
+                  <ul>
+                    {rom.map((ki) => (
+                      <li>
+                        {spelling == "IPA"
+                          ? toIpa(ki)
+                          : spelling == "NY"
+                          ? toYaehwei(ki)
+                          : ki}
+                      </li>
+                    ))}
+                  </ul>
+                </rt>
+              </ruby>
+            );
+          } else {
+            return <>{char}</>;
+          }
+        });
   return listItems;
 }
 
