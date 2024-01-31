@@ -62,7 +62,7 @@ function App() {
           </div>
         </div>
       </form>
-      <div className="my-3">
+      <div id="shiuchiuh" className="my-3">
         <Romanization name={name} spelling={romanization} />
       </div>
       <hr />
@@ -88,74 +88,68 @@ function Romanization({ name, spelling }) {
   if (!name) {
     return null;
   }
+  var romanizationList;
   if (spelling.slice(-2) == "PD") {
-    const romanizationList = wordRomanization(name);
-    return (
-      <div className="d-flex" id="shiuchiuhexp">
-        {romanizationList.map((char) => (
-          <ul className="touinzy">
-            {char.map((ki) => (
-              <li>{spelling == "IPAPD" ? toIpaNoTone(ki) : ki}</li>
-            ))}
-          </ul>
-        ))}
-      </div>
-    );
+    romanizationList = wordRomanization(name);
   } else {
-    const romanizationList = lookupRomanization(name);
-    const listItems =
-      window.navigator.userAgent.indexOf("Chrome") !== -1
-        ? romanizationList.map(({ char, rom }) => {
-            //is Chrome
-            if (rom) {
-              return (
-                <ruby>
-                  <rb>{char}</rb>
-                  <rt>
+    romanizationList = lookupRomanization(name);
+  }
+  const listItems =
+    window.navigator.userAgent.indexOf("Chrome") !== -1
+      ? romanizationList.map(({ char, rom }) => {
+          //is Chrome
+          if (rom) {
+            return (
+              <ruby>
+                <rb>{char}</rb>
+                <rt>
+                  {rom.map((ki) => (
+                    <>
+                      {spelling == "IPAPD"
+                        ? toIpaNoTone(ki)
+                        : spelling == "IPA"
+                        ? toIpa(ki)
+                        : spelling == "NY"
+                        ? toYaehwei(ki)
+                        : ki}
+                      <br></br>
+                    </>
+                  ))}
+                </rt>
+              </ruby>
+            );
+          } else {
+            return <>{char}</>;
+          }
+        })
+      : romanizationList.map(({ char, rom }) => {
+          //is not Chrome
+          if (rom) {
+            return (
+              <ruby>
+                <rb>{char}</rb>
+                <rt>
+                  <ul>
                     {rom.map((ki) => (
-                      <>
-                        {spelling == "IPA"
+                      <li>
+                        {spelling == "IPAPD"
+                          ? toIpaNoTone(ki)
+                          : spelling == "IPA"
                           ? toIpa(ki)
                           : spelling == "NY"
                           ? toYaehwei(ki)
                           : ki}
-                        <br></br>
-                      </>
+                      </li>
                     ))}
-                  </rt>
-                </ruby>
-              );
-            } else {
-              return <>{char}</>;
-            }
-          })
-        : romanizationList.map(({ char, rom }) => {
-            //is not Chrome
-            if (rom) {
-              return (
-                <ruby>
-                  <rb>{char}</rb>
-                  <rt>
-                    <ul>
-                      {rom.map((ki) => (
-                        <li>
-                          {spelling == "IPA"
-                            ? toIpa(ki)
-                            : spelling == "NY"
-                            ? toYaehwei(ki)
-                            : ki}
-                        </li>
-                      ))}
-                    </ul>
-                  </rt>
-                </ruby>
-              );
-            } else {
-              return <>{char}</>;
-            }
-          });
-    return <div id="shiuchiuh">{listItems}</div>;
-  }
+                  </ul>
+                </rt>
+              </ruby>
+            );
+          } else {
+            return <>{char}</>;
+          }
+        });
+  return listItems;
 }
 
 function lookupRomanization(name) {
@@ -258,7 +252,7 @@ function toIpa(inputString) {
     [/2X/g, "˥˧"],
     [/3X/g, "˧˥"],
     [/1/g, "˨"],
-    [/2/g, "˧˩"],
+    [/2/g, "˥˨"],
     [/3/g, "˩˧"],
   ];
 
@@ -356,17 +350,23 @@ function wordRomanization(words) {
   for (const word of words.split(" ")) {
     if (regexp.test(word)) {
       //single char
-      const char = dictData[word];
-      result.push(char.map((a) => toneConvOne(analyseSyllable(a))));
+      const rom = dictData[word];
+      result.push({
+        char: word,
+        rom: rom.map((a) => toneConvOne(analyseSyllable(a))),
+      });
     } else if (regexp_2.test(word)) {
       //two sandhi
-      const char = generateCombinations([
+      const rom = generateCombinations([
         dictData[word.slice(0, 1)].map((a) => analyseSyllable(a)),
         dictData[word.slice(1, 2)].map((a) => analyseSyllable(a)),
       ]);
-      result.push(char.map((a) => toneConvTwo(a)));
+      result.push({
+        char: word,
+        rom: rom.map((a) => toneConvTwo(a)),
+      });
     } else {
-      result.push([word]);
+      result.push({ char: word, rom: null });
     }
   }
   return result;
@@ -387,7 +387,7 @@ function toneConvOne(char) {
   /*input ["sing", 6 ]
     output "sing˨˦"
   */
-  const table = ["˦", "˨", "˥˨", "˧˩", "˧˥", "˨˦", "˦", "˨"];
+  const table = ["˦", "˨", "˥˨", "˥˨", "˧˥", "˨˦", "˦", "˨"];
   return char[0] + table[char[1] - 1];
 }
 
@@ -433,13 +433,13 @@ function toneConvTwo(char) {
       ["˨˧", "˧"],
     ],
     [
-      ["˦", "˥˩"],
+      ["˦", "˥˨"],
       ["˦", "˧˩"],
       ["˦", "˩˧"],
       ["˦", "˧"],
     ],
     [
-      ["˨", "˥˩"],
+      ["˨", "˥˨"],
       ["˨", "˧˩"],
       ["˨", "˩˧"],
       ["˨", "˧"],
