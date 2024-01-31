@@ -52,6 +52,7 @@ function App() {
               <option value="IPA">IPA（本調）</option>
               <option value="NY">吳語協會拼音</option>
               <option value="PD">變調（試驗性）</option>
+              <option value="IPAPD">變調IPA（試驗性）</option>
             </select>
           </div>
           <div className="col-sm-2">
@@ -87,14 +88,14 @@ function Romanization({ name, spelling }) {
   if (!name) {
     return null;
   }
-  if (spelling == "PD") {
+  if (spelling.slice(-2) == "PD") {
     const romanizationList = wordRomanization(name);
     return (
       <div className="d-flex" id="shiuchiuhexp">
         {romanizationList.map((char) => (
           <ul className="touinzy">
             {char.map((ki) => (
-              <li>{ki}</li>
+              <li>{spelling == "IPAPD" ? toIpaNoTone(ki) : ki}</li>
             ))}
           </ul>
         ))}
@@ -356,21 +357,18 @@ function wordRomanization(words) {
     if (regexp.test(word)) {
       //single char
       const char = dictData[word];
-      result.push(
-        char.map((a) => toIpaNoTone(toneConvOne(analyseSyllable(a))))
-      );
+      result.push(char.map((a) => toneConvOne(analyseSyllable(a))));
     } else if (regexp_2.test(word)) {
       //two sandhi
       const char = generateCombinations([
         dictData[word.slice(0, 1)].map((a) => analyseSyllable(a)),
         dictData[word.slice(1, 2)].map((a) => analyseSyllable(a)),
       ]);
-      result.push(char.map((a) => toIpaNoTone(toneConvTwo(a))));
+      result.push(char.map((a) => toneConvTwo(a)));
     } else {
       result.push([word]);
     }
   }
-  //金 石 恆 久 遠 ， 吳 語 永 承 傳 。
   return result;
 }
 
