@@ -379,7 +379,7 @@ function analyseSyllable(syl) {
   var diau = syl.slice(-1);
   diau = /\d/.test(diau) ? parseInt(diau) : 4;
   const res = syl.replace(/\d/, "");
-  diau = /^([ptkhtscaeiou]|[lmn]h|ngh)/.test(res) ? 2 * diau - 1 : 2 * diau;
+  diau = /^([fptkhtscaeiou]|[lmn]h|ngh)/.test(res) ? 2 * diau - 1 : 2 * diau;
   return [res, diau];
 }
 
