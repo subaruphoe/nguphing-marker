@@ -171,7 +171,7 @@ function lookupRomanization(name) {
 function toYaehwei(inputString) {
   const replacements = [
     [/ts/g, "tsh"],
-    [/tz/g, "tz"],
+    [/tz/g, "ts"],
     [/oh/g, "oeh"],
     [/ah/g, "aeh"],
     [/uk/g, "oh"],
