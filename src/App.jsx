@@ -13,7 +13,9 @@ const footerlinks = [
 var dictData;
 async function fetchJSON() {
   console.log("Loading dictionary...");
-  const response = await fetch("https://dinishing.github.io/vocabulary/char_phon_simp.json");
+  const response = await fetch(
+    "https://dinishing.github.io/vocabulary/char_phon_simp.json"
+  );
   const json = await response.json();
   dictData = json;
   console.log("Loaded dictionary.");
@@ -111,6 +113,8 @@ function Romanization({ name, spelling }) {
                         ? toIpa(ki)
                         : spelling == "NY"
                         ? toYaehwei(ki)
+                        : spelling == "NR"
+                        ? addTone(ki)
                         : ki}
                       <br></br>
                     </>
@@ -138,6 +142,8 @@ function Romanization({ name, spelling }) {
                           ? toIpa(ki)
                           : spelling == "NY"
                           ? toYaehwei(ki)
+                          : spelling == "NR"
+                          ? addTone(ki)
                           : ki}
                       </li>
                     ))}
@@ -186,6 +192,48 @@ function toYaehwei(inputString) {
     [/ang/g, "an"],
     [/iun/g, "iuin"],
     [/iuh/g, "iuih"],
+  ];
+
+  let resultString = inputString;
+  for (const replacement of replacements) {
+    const regex = replacement[0];
+    const replaceWith = replacement[1];
+    resultString = resultString.replace(regex, replaceWith);
+  }
+  return resultString;
+}
+
+function addTone(inputString) {
+  const replacements = [
+    [/([aeiou])ng([123])/g, "$1$2ng"],
+    [/([eiu])n([123])/g, "$1$2n"],
+    [/([ao])e([123])/g, "$1$2e"],
+    [/([ae])i([123])/g, "$1$2i"],
+    [/([aeo])u([123])/g, "$1$2u"],
+    [/a2/g, "à"],
+    [/a3/g, "á"],
+    [/a1/g, "ā"],
+    [/e2/g, "è"],
+    [/e3/g, "é"],
+    [/e1/g, "ē"],
+    [/o2/g, "ò"],
+    [/o3/g, "ó"],
+    [/o1/g, "ō"],
+    [/i2/g, "ì"],
+    [/i3/g, "í"],
+    [/i1/g, "ī"],
+    [/u2/g, "ù"],
+    [/u3/g, "ú"],
+    [/u1/g, "ū"],
+    [/y2/g, "ỳ"],
+    [/y3/g, "ý"],
+    [/y1/g, "ȳ"],
+    [/ng2/g, "ǹg"],
+    [/ng3/g, "ńg"],
+    [/ng1/g, "n̄g"],
+    [/m2/g, "m̀"],
+    [/m3/g, "ḿ"],
+    [/m1/g, "m̄"],
   ];
 
   let resultString = inputString;
@@ -252,7 +300,7 @@ function toIpa(inputString) {
     [/2X/g, "˥˧"],
     [/3X/g, "˧˥"],
     [/1/g, "˨"],
-    [/2/g, "˥˨"],
+    [/2/g, "˧˩"],
     [/3/g, "˩˧"],
   ];
 
