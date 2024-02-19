@@ -414,8 +414,8 @@ function wordRomanization(words) {
 }
 
 function analyseSyllable(syl) {
-  /*input "sing3"
-    output ["sing", 6 ]
+  /*input "zing3"
+    output ["zing", 6 ]
   */
   var diau = syl.slice(-1);
   diau = /\d/.test(diau) ? parseInt(diau) : 4;
