@@ -193,6 +193,7 @@ function toYaehwei(inputString) {
     [/ak/g, "ah"],
     [/ang/g, "an"],
     [/(y|i)u(n|h)/g, "$1ui$2"],
+    [/([aeo])([eiu])(n|l)([123])/g, "$1$3$2"],
   ];
     function addTone(inputString);
 
