@@ -193,8 +193,8 @@ function toYaehwei(inputString) {
     [/ak/g, "ah"],
     [/ang/g, "an"],
     [/(y|i)u(n|h)/g, "$1ui$2"],
-    function addTone(),
   ];
+    function addTone(inputString);
 
   let resultString = inputString;
   for (const replacement of replacements) {
