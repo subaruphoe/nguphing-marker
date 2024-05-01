@@ -207,7 +207,7 @@ function toYaehwei(inputString) {
 function addTone(inputString) {
   const replacements = [
     [/([aeiou])(ng|n|l)([123])/g, "$1$3$2"],
-    [/([aeo])([eiu])([xrq])/g, "$1$3$2"],
+    [/([aeo])([eiu])([123])/g, "$1$3$2"],
     [/a2/g, "à"],
     [/a3/g, "á"],
     [/a1/g, "ā"],
